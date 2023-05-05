@@ -18,11 +18,17 @@ public class TelaPrincipal
     TelaGarcom telaGarcom = null!;
     TelaMesa telaMesa = null!;
     TelaProduto telaProduto = null!;
+    TelaConta telaConta = null!;
 
  
-    public int Menu()
+    public ITelaBase Menu()
     {
-       
+        telaGarcom = new TelaGarcom(repositorioGarcom)!;
+        telaMesa = new TelaMesa(repositorioMesa);
+        telaProduto = new TelaProduto(repositorioProduto)!;
+        telaConta = new TelaConta(repositorioConta, telaGarcom, telaMesa, telaProduto);
+
+
         Console.Clear();
         Console.WriteLine("====== Bar Da Galera ======\n");
 
@@ -33,47 +39,27 @@ public class TelaPrincipal
         string voltar = "9 - Voltar";
 
         Console.Write($"{opcao1}\n{opcao2}\n{opcao3}\n{opcao4}\n{voltar}\n=> ");
-        return int.Parse(Console.ReadLine()!);
+
+        return AtribuirTela(int.Parse(Console.ReadLine()!));
     }
 
-    public ITelaBase AtribuirTela(int opcao)
+    public void AdicionarAlgunsItens()
+    {
+        AdicionarItens(repositorioProduto, repositorioMesa, repositorioGarcom);
+    }
+
+    private ITelaBase AtribuirTela(int opcao)
     {
         return opcao switch
         {
-            1 => CriarTela(typeof(TelaGarcom)),
-            2 => CriarTela(typeof(TelaMesa)),
-            3 => CriarTela(typeof(TelaProduto)),
-            4 => CriarTela(typeof(TelaConta)),
+            1 => telaGarcom,
+            2 => telaMesa,
+            3 => telaProduto,
+            4 => telaConta,
             _ => null!,
         };
     }
 
-    private ITelaBase CriarTela(Type tipo)
-    {
-        if (tipo.Equals(typeof(TelaGarcom)))
-        {
-            telaGarcom = new TelaGarcom(repositorioGarcom);
-            return telaGarcom;
-        }
-        else if (tipo.Equals(typeof(TelaMesa)))
-        {
-            telaMesa = new TelaMesa(repositorioMesa);
-            return telaMesa;
-        }
-        else if (tipo.Equals(typeof(TelaProduto)))
-        {
-            telaProduto = new TelaProduto(repositorioProduto);
-            return telaProduto;
-        }
-        else if (tipo.Equals(typeof(TelaConta)))
-        {
-            return new TelaConta(repositorioConta, telaGarcom, telaMesa, telaProduto);
-        }
-        else
-        {
-            return null!;
-        }
-    }
 
     private static void AdicionarItens(RepositorioProduto repositorioProduto, RepositorioMesa repositorioMesa, RepositorioGarcom repositorioGarcom)
     {
@@ -89,11 +75,5 @@ public class TelaPrincipal
         repositorioMesa.Inserir(new Mesa(6));
         repositorioMesa.Inserir(new Mesa(8));
     }
-
-    public void AdicionarAlgunsItens()
-    {
-        AdicionarItens(repositorioProduto, repositorioMesa, repositorioGarcom);
-    }
-
 
 }

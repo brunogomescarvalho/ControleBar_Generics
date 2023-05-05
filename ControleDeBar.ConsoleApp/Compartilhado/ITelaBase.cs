@@ -7,5 +7,6 @@ public interface ITelaBase
     void VisualizarRegistros(bool mostrarCabecalho);
     void EditarRegistro();
     void ExcluirRegistro();
+    void MostrarMensagemDeErro(string mensagem);
 
 }

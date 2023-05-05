@@ -20,17 +20,13 @@ public class Program
         {
             try
             {
-                int opcaoMenu = telaPrincipal.Menu();
-
-                tela = telaPrincipal.AtribuirTela(opcaoMenu);
+                tela = telaPrincipal.Menu();
 
                 string subMenu = "";
 
-                if (tela is TelaConta)
+                if (tela is TelaConta telaConta)
                 {
-                    TelaConta telaConta = (TelaConta)tela;
-
-                    do
+                    while (subMenu != "s")
                     {
                         subMenu = tela.ApresentarMenu();
 
@@ -46,10 +42,10 @@ public class Program
                             case "8": telaConta.ExibirFaturamentoDiario(); break;
 
                         }
-                    } while (subMenu != "s");
+                    }
                 }
 
-                do
+                while (subMenu != "s")
                 {
                     subMenu = tela.ApresentarMenu();
 
@@ -63,7 +59,7 @@ public class Program
                         default: continue;
                     }
                 }
-                while (subMenu != "s");
+
             }
             catch (FormatException)
             {
